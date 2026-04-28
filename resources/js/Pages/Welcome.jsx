@@ -1,10 +1,12 @@
 import { Head, Link } from '@inertiajs/react';
-import { Brain, Zap, BarChart3, Workflow, MapPin, Banknote, ChevronLeft, ChevronRight, UserRound, BriefcaseBusiness } from "lucide-react";
+import { Brain, Zap, BarChart3, Workflow, MapPin, Banknote, ChevronLeft, ChevronRight, UserRound, BriefcaseBusiness, Earth, Link2 } from "lucide-react";
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const [active, setActive] = useState("home");
+    const [mobileOpen, setMobileOpen] = useState(false);
     const scrollRef = useRef(null);
 
     const navClass = (menu) =>
@@ -89,30 +91,25 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             initial={{ y: -80 }}
                             animate={{ y: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="w-full py-6 sticky top-0 z-50 bg-white shadow-sm">
-                            <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
-                                <div className="flex items-center gap-10">
-                                    <div className="text-xl font-bold text-black">
-                                        SRMS
-                                    </div>
+                            className="w-full py-4 sticky top-0 z-50 bg-white shadow-sm"
+                        >
+                            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-6">
 
-                                    <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-                                        <a href="#home" onClick={() => setActive("home")} className={navClass("home")}>
-                                            HOME
-                                        </a>
-                                        <a href="#jobs" onClick={() => setActive("jobs")} className={navClass("jobs")}>
-                                            JOBS
-                                        </a>
-                                        <a href="#features" onClick={() => setActive("features")} className={navClass("features")}>
-                                            FEATURES
-                                        </a>
-                                        <a href="#about" onClick={() => setActive("about")} className={navClass("about")}>
-                                            ABOUT
-                                        </a>
-                                    </nav>
+                                {/* LOGO */}
+                                <div className="text-xl font-bold text-black">
+                                    SRMS
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                {/* DESKTOP MENU */}
+                                <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+                                    <a href="#home" onClick={() => setActive("home")} className={navClass("home")}>HOME</a>
+                                    <a href="#jobs" onClick={() => setActive("jobs")} className={navClass("jobs")}>JOBS</a>
+                                    <a href="#features" onClick={() => setActive("features")} className={navClass("features")}>FEATURES</a>
+                                    <a href="#about" onClick={() => setActive("about")} className={navClass("about")}>ABOUT</a>
+                                </nav>
+
+                                {/* RIGHT SIDE */}
+                                <div className="hidden md:flex items-center gap-4">
                                     {auth.user ? (
                                         <Link
                                             href={route('dashboard')}
@@ -132,7 +129,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                                 <Link
                                                     href="#"
-                                                    className="bg-purple-500 text-white px-5 py-2 rounded-md font-semibold border border-purple-500
+                                                    className="bg-purple-500 text-white px-4 py-2 rounded-md font-semibold border border-purple-500
                                                     hover:bg-transparent hover:text-purple-500 transition duration-300"
                                                 >
                                                     Get Started
@@ -141,18 +138,60 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         </>
                                     )}
                                 </div>
+
+                                {/* HAMBURGER BUTTON */}
+                                <button
+                                    onClick={() => setMobileOpen(!mobileOpen)}
+                                    className="md:hidden p-2 rounded-md border"
+                                >
+                                    {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+                                </button>
                             </div>
+
+                            {/* MOBILE MENU */}
+                            {mobileOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="md:hidden bg-white border-t px-4 py-4 space-y-4"
+                                >
+                                    <a href="#home" onClick={() => { setActive("home"); setMobileOpen(false); }} className="block">HOME</a>
+                                    <a href="#jobs" onClick={() => { setActive("jobs"); setMobileOpen(false); }} className="block">JOBS</a>
+                                    <a href="#features" onClick={() => { setActive("features"); setMobileOpen(false); }} className="block">FEATURES</a>
+                                    <a href="#about" onClick={() => { setActive("about"); setMobileOpen(false); }} className="block">ABOUT</a>
+
+                                    <div className="border-t pt-4 flex flex-col gap-3">
+                                        {auth.user ? (
+                                            <Link href={route('dashboard')} className="text-sm">
+                                                Dashboard
+                                            </Link>
+                                        ) : (
+                                            <>
+                                                <Link href={route('login')} className="text-sm">
+                                                    Login
+                                                </Link>
+                                                <Link
+                                                    href="#"
+                                                    className="bg-purple-500 text-white px-3 py-1.5 rounded text-sm text-center w-fit"
+                                                >
+                                                    Get Started
+                                                </Link>
+                                            </>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
                         </motion.header>
 
                         <main className="mt-10">
-                            <section id="home" className="scroll-mt-24 grid md:grid-cols-2 gap-10 items-center">
-                                <div className='pl-6'>
+                            <section id="home" className="grid md:grid-cols-2 gap-10 items-center py-12">
+                                <div className='pl-6 text-center md:text-left'>
                                     <motion.div
                                     initial={{ opacity: 0, y: 40 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6 }}
                                      >
-                                        <h1 className="text-4xl font-bold text-gray-900">
+                                        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
                                             Smart Recruitment with AI
                                         </h1>
                                         <p className="mt-4 text-gray-600">
@@ -160,7 +199,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                             Automate your hiring process and focus on what
                                             matters most human connection.
                                         </p>
-                                        <div className="mt-6 flex gap-4">
+                                        <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                                             <motion.button 
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
@@ -179,12 +218,12 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     </motion.div>
                                 </div>
 
-                                <div className="flex justify-end pr-6">
+                                <div className="flex justify-center md:justify-end">
                                     <img src="/images/jobillustration.jpg" alt="Job Image" className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-xl"/>
                                 </div>
                             </section>
 
-                            <section id="features" className='scroll-mt-24 mt-16 bg-purple-200 py-16 w-full sm:px-6 lg:px-8'>
+                            <section id="features" className='bg-purple-200 py-12 sm:py-16 px-4 sm:px-6 lg:px-8'>
                                 <div className='pt-5 text-2xl sm:text-3xl text-center text-black font-bold'>
                                     <h1>Powerfull Recruitment Tools</h1>
                                 </div>
@@ -227,7 +266,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 </motion.div>
                             </section>
 
-                            <section id='jobs' className='scroll-mt-24 bg-purple-100 py-20 w-full'>
+                            <section id='jobs' className='bg-purple-100 py-12 sm:py-20 px-4 sm:px-6 lg:px-8'>
                                 <div className='text-center'>
                                     <h1 className='text-3xl sm:text-4xl font-bold text-black'>
                                         Featured Job Openings
@@ -331,33 +370,243 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                             </section>
 
-                            <section className='bg-purple-100 w-full'>
+                            <section className='bg-purple-100 w-full py-12'>
                                 <div className='text-center'>
                                     <h1 className='text-3xl sm:text-4xl font-bold text-black'>
                                         The Journey to Succes
                                     </h1>
                                 </div>
-                                <div className='mt-10 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6'>
-                                    <div className='flex items-start gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-purple-500'>
-                                        <div>
+                                <div className='mt-12 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8'>
+                                    <div className='bg-white p-6 rounded-2xl shadow-sm border-l-4 border-purple-500'>
+                                        <div className='flex items-center gap-3 mb-6'>
                                             <UserRound className='text-purple-600'></UserRound>
                                             <h2 className='text-2xl text-black font-bold'>
                                                 For Candidates
                                             </h2>
                                         </div>
-                                    </div>
-                                    <div className='flex items-start gap-4 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-green-500'>
-                                        <div className=''>
-                                            <BriefcaseBusiness className='text-green-600'></BriefcaseBusiness>
+                                        <div className='space-y-5'>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    1
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Upload CV</p>
+                                                    <p className='text-sm'>
+                                                        Our AI parses your experience instantly.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    2
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Apply</p>
+                                                    <p className='text-sm'>
+                                                        One-click applications to matching roles.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    3
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Interview</p>
+                                                    <p className='text-sm'>
+                                                        Direct connection with hiring managers.
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <h2 className='text-black'>For HR Teams</h2>
                                     </div>
+                                    <div className='bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500'>
+                                        <div className='flex items-center gap-3 mb-6'>
+                                            <BriefcaseBusiness className='text-green-600'></BriefcaseBusiness>
+                                            <h2 className='text-2xl text-black font-bold'>For HR Teams</h2>
+                                        </div>
+                                        <div className='space-y-5'>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    1
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Post Job</p>
+                                                    <p className='text-sm'>
+                                                        Define roles and AI screening criteria.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    2
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Review</p>
+                                                    <p className='text-sm'>
+                                                        AI scores and prioritizes top talent.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className='flex items-start gap-3'>
+                                                <div className='w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold'>
+                                                    3
+                                                </div>
+                                                <div>
+                                                    <p className='font-medium text-black'>Hire</p>
+                                                    <p className='text-sm'>
+                                                        Seamless offer and onboarding workflow.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id='about' className='scroll-mt-24 bg-purple-200 py-16 w-full'>
+                                <div className='max-w-6xl mx-auto px-6'>
+                                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-center'>
+                                        <div className='px-6 py-6 border-r border-purple-300 last:border-none hover:-translate-y-1 hover:shadow-md transition duration-300'>
+                                            <h3 className='text-lg font-semibold text-black mb-2'>
+                                                Candidate
+                                            </h3>
+                                            <p>"Get matched with jobs that truly value your expertise through intelligent parsing."</p>
+                                        </div>
+                                        <div className='px-6 py-6 border-r border-purple-300 last:border-none hover:-translate-y-1 hover:shadow-md transition duration-300'>
+                                            <h3 className='text-lg font-semibold text-black mb-2'>
+                                                Recruiter
+                                            </h3>
+                                            <p>"Stop reading irrelevant CVs. Focus on interviewing top-scored talent immediately."</p>
+                                        </div>
+                                        <div className='px-6 py-6 border-r border-purple-300 last:border-none hover:-translate-y-1 hover:shadow-md transition duration-300'>
+                                            <h3 className='text-lg font-semibold text-black mb-2'>
+                                                Manager
+                                            </h3>
+                                            <p>"Build high-performing teams with data-driven hiring decisions and oversight."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className='bg-white py-16 w-full'>
+                                <div className='max-w-6xl mx-auto px-6'>
+                                    <div className='bg-gradient-to-r from-[#0f172a] to-[#1e293b] 
+                                                    rounded-3xl p-8 md:p-12 text-white shadow-lg relative overflow-hidden'>
+                                        <div className='max-w-lg'>
+                                            <h2 className='text-2xl md:text-3xl font-bold mb-3'>
+                                                Visual Intelligence Showcase
+                                            </h2>
+                                            <p className='text-gray-300 text-sm mb-6'>
+                                                Experience our AI CV Scoring in action. We don’t just search for
+                                                keywords, we understand professional growth and skill proficiency.
+                                            </p>
+                                            <div className='space-y-4'>
+                                                <div className='bg-white/10 backdrop-blur-md rounded-xl p-4 flex items-center justify-between'>
+                                                    <div className='flex items-center gap-3'>
+                                                        <div className='w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold'>
+                                                            JD
+                                                        </div>
+                                                        <div>
+                                                            <p className='text-sm font-semibold'>Jone Doe</p>
+                                                            <p className='text-xs text-gray-300'>Senior UX Designer</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className='flex items-center gap-2'>
+                                                        <span className='text-green-400 font-bold'>98</span>
+                                                        <div className='w-20 h-2 bg-white/20 rounded-full'>
+                                                            <div className='w-[90%] h-2 bg-green-400 rounded-full'></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='bg-white/10 backdrop-blur-md rounded-xl p-4 flex items-center justify-between'>
+                                                    <div className='flex items-center gap-3'>
+                                                        <div className='w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center text-sm font-bold'>
+                                                            MS
+                                                        </div>
+                                                        <div>
+                                                            <p className='text-sm font-semibold'>Mark Smith</p>
+                                                            <p className='text-xs text-gray-300'>Junior Product Designer</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className='flex items-center gap-2'>
+                                                        <span className='text-yellow-400 font-bold'>74</span>
+                                                        <div className='w-20 h-2 bg-white/20 rounded-full'>
+                                                            <div className='w-[70%] h-2 bg-yellow-400 rounded-full'></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className='bg-white py-16 w-full'>
+                                <div className='flex justify-center'>
+                                    <h1 className='text-black font-bold text-2xl sm:text-3xl'>Mulai rekrutmen lebih cepat sekarang</h1>
+                                </div>
+                                <div className='flex justify-center pt-5'>
+                                    <p className='text-sm text-gray-600'>Join hundreds of companies scaling their engineering and product teams with SRMS AI</p>
+                                </div>
+                                <div className='pt-10 flex justify-center gap-4'>
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="bg-purple-500 text-white px-5 py-2 rounded w-full sm:w-auto
+                                        border border-purple-500 hover:bg-transparent hover:text-purple-500 transition duration-300">
+                                    Get Started
+                                    </motion.button>
+                                    <motion.button 
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="border border-black text-black px-5 py-2 rounded w-full sm:w-auto
+                                        hover:bg-black hover:text-white transition duration-300">
+                                    Post a Job
+                                    </motion.button>
                                 </div>
                             </section>
                         </main>
 
-                        <footer className="py-16 text-center text-sm text-black dark:text-white/70">
-                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                        <footer className="bg-gray-50 border-t py-10 sm:py-12 w-full">
+                            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+                                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
+                                    <div className='text-center sm:text-left'>
+                                        <h2 className='text-lg text-black font-semibold mb-2'>SRMS AI</h2>
+                                        <p className='text-sm text-gray-500'>2026 Smart Recruitment Management System</p>
+                                        <p className='text-sm text-gray-400 mt-1'>Joko Handoyo Iman Putro</p>
+                                    </div>
+                                    <div className='flex justify-center sm:justify-start lg:justify-center gap-10 sm:gap-12 text-center sm:text-left'>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-black mb-3">
+                                                Company
+                                            </h3>
+                                            <ul className="space-y-2 text-sm text-gray-500">
+                                                <li className="hover:text-purple-600 cursor-pointer">About</li>
+                                                <li className="hover:text-purple-600 cursor-pointer">Contact Us</li>
+                                            </ul>
+                                        </div>
+
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-black mb-3">
+                                                Legal
+                                            </h3>
+                                            <ul className="space-y-2 text-sm text-gray-500">
+                                                <li className="hover:text-purple-600 cursor-pointer">Privacy Policy</li>
+                                                <li className="hover:text-purple-600 cursor-pointer">Terms of Service</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center lg:justify-end gap-3">
+                                        <button className="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-100 transition">
+                                            <Earth></Earth>
+                                        </button>
+                                        <button className="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-100 transition">
+                                            <Link2></Link2>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </footer>
                     </div>
                 </div>
